@@ -43,7 +43,9 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
           chmod 600 key.pem
+          scp -i key.pem -o StrictHostKeyChecking=no docker-compose.yml nginx.conf ubuntu@13.125.249.66:~/
           ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@13.125.249.66 "
             docker pull ${{ secrets.DOCKER_USERNAME }}/counter-app:latest
-            docker-compose up -d
+#            docker-compose up -d
+            docker compose up -d --build
           "

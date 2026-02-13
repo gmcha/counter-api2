@@ -5,8 +5,9 @@ services:
       - "6379:6379"
 
   app:
-    build: .
+#    build: .
     # ports 제거! (Nginx만 외부 노출)
+    image: gmcha/counter-app:latest
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/counterdb
       REDIS_HOST: redis

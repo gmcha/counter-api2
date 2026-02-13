@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    # ports 제거! (Nginx만 외부 노출)
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/counterdb
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
